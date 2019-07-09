@@ -15,8 +15,8 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tag = Tag::ordderBy('created_at', 'desc')->get();
-        return view('backend.tag.index', compact(tag));
+        $tag = Tag::orderBy('created_at','desc')->get();
+        return view('backend.tag.index', compact('tag'));
     }
 
     /**
@@ -26,7 +26,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        return view('backend.tag.create');
+        return view ('backend.tag.create');
     }
 
     /**
@@ -37,17 +37,17 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-         $request->validate([
+        $request->validate([
             'nama_tag' => 'required|unique:tags'
         ]);
         $tag = new Tag();
         $tag->nama_tag = $request->nama_tag;
-        $tag->slug = str_slug($request->nama_tag, '_');
+        $tag->slug = str_slug($request->nama_tag, '-');
         $tag->save();
-        Session::flash("flash_noification", [
+        Session::flash("flash_notification",[
             "level" => "success",
-            "message" => "Berhasil Menyimpan<b>"
-                 . $tag->nama_tag . "</b>"
+            "message" => "Berhasil menyimpan<b>"
+                         . $tag->nama_tag."</b>"
         ]);
         return redirect()->route('tag.index');
     }
@@ -72,7 +72,7 @@ class TagController extends Controller
     public function edit($id)
     {
         $tag = Tag::findOrfail($id);
-        return view('backend.tag.edit', compact('tag'));
+        return view('backend.tag.edit',compact('tag'));
     }
 
     /**
@@ -89,14 +89,14 @@ class TagController extends Controller
         ]);
         $tag = Tag::findOrfail($id);
         $tag->nama_tag = $request->nama_tag;
-        $tag->slug = str_slug($request->nama_tag, '_');
+        $tag->slug = str_slug($request->nama_tag, '-');
         $tag->save();
-        Session::flash("flash_noification", [
+        Session::flash("flash_notification",[
             "level" => "success",
-            "message" => "Berhasil Menyimpan<b>"
-                 . $tag->nama_tag . "</b>"
+            "message" => "Berhasil mengedit<b>"
+                         . $tag->nama_tag."</b>"
         ]);
-    return redirect()->route('tag.index');
+        return redirect()->route('tag.index');
     }
 
     /**
@@ -107,12 +107,12 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        $tag = Tag::findOrfail($id);
-        //Session::flash("flash_noification", [
-        //    "level" => "success",
-        //    "message" => "Berhasil Menghapus<b>"
-        //         . $kategori->nama_kategori . "</b>"
-        //]);
+        $tag = Tag::findOrfail($id)->delete();
+        // Session::flash("flash_notification",[
+        //     "level" => "Success",
+        //     "message" => "Berhasil menghapus<b>"
+        //                  . $tag->nama_tag."</b>"
+        // ]);
         return redirect()->route('tag.index');
     }
 }

@@ -1,51 +1,71 @@
 @extends('layouts.app')
+
+@section('css')
+        <link rel="stylesheet" href="{{asset('assets/backend/assets/vendor/datatables.net-bs4/css/dataTables.bootstrap4.css')}}">
+@endsection
+
+@section('js')
+        <script src="{{asset('assets/backend/assets/vendor/datatables.net/js/jquery.dataTables.js')}}"></script>
+        <script src="{{asset('assets/backend/assets/vendor/datatables.net-bs4/js/dataTables.bootstrap4.js')}}"></script>
+        <script src="{{asset('assets/backend/assets/js/components/datatables-init.js')}}"></script>
+@endsection
+
 @section('content')
-    <!-- Main Section -->
-    <section class="main-section">
-        <!-- Add Your Content Inside -->
-        <div class="content">
-            <!-- Remove This Before You Start -->
-            <h1>Smk Assalaam Bandung</h1>
-            @if(Session::has('alert-success'))
-                <div class="alert alert-success">
-                    <strong>{{ \Illuminate\Support\Facades\Session::get('alert-success') }}</strong>
+<section class="page-content container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <h5 class="card-header">Data Tables Artikel</h5><br>
+                <center>
+                        <a href="{{ route('artikel.create') }}"
+                            class="la la-cloud-upload btn btn-info btn-rounded btn-floating btn-outline">&nbsp;Tambah Data
+                        </a>
+                </center>
+                <div class="card-body">
+                    <table id="bs4-table" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Judul</th>
+                                <th>Slug</th>
+                                <th>Kategori</th>
+                                <th>Penulis</th>
+                                <th>Foto</th>
+                                <th style="text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($artikel as $data)
+                            <tr>
+                                <td>{{$data->judul}}</td>
+                                <td>{{$data->slug}}</td>
+                                <td>{{$data->kategori->nama_kategori}}</td>
+                                <td>{{$data->user->name}}</td>
+                                <td><img src="{{asset('assets/img/artikel/' .$data->foto. '')}}"
+                                    style="width:250px; height:250px;" alt="Foto"></td>
+                               
+								<td style="text-align: center;">
+                                    <form action="{{route('artikel.destroy', $data->id)}}" method="post">
+                                        {{csrf_field()}}
+									<a href="{{route('artikel.edit', $data->id)}}"
+										class="zmdi zmdi-edit btn btn-warning btn-rounded btn-floating btn-outline"> Edit
+                                    </a>
+                                    <a href="{{route('artikel.show', $data->id)}}"
+										class="zmdi zmdi-eye btn btn-success btn-rounded btn-floating btn-outline"> Show
+                                    </a >
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<input type="hidden" name="_method" value="DELETE">
+										<button type="submit" class="zmdi zmdi-delete  btn-rounded btn-floating btn btn-dangerbtn btn-danger btn-outline"> Delete</button>
+									</form>
+								</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+
                 </div>
-            @endif
-            <hr>
-            <center><button><a href="#">Tambah Data</a></button></center>
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Judul</th>
-                    <th>Slug</th>
-                    <th>Konten</th>
-                    <th>Foto</th>
-                    <th colspan="2">Aksi</th>
-                </tr>
-                </thead>
-                <tbody>
-                @php $no = 1; @endphp
-                @foreach($artikel as $datas)
-                    <tr>
-                        <td>{{ $no++ }}</td>
-                        <td>{{ $datas->judul }}</td>
-                        <td>{{ $datas->slug }}</td>
-                        <td>{{ $datas->konten }}</td>
-                        <td>{{ $datas->foto }}</td>
-                        <td>
-                            <form action="{{ route('kontak.destroy', $datas->id) }}" method="post">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
-                                <a href="{{ route('kontak.edit',$datas->id) }}" class=" btn btn-sm btn-primary">Edit</a>
-                                <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Yakin ingin menghapus data?')">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+            </div>
         </div>
-        <!-- /.content -->
-    </section>
-    <!-- /.main-section -->
+    </div>
+</section>
 @endsection

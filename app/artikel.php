@@ -6,39 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class Artikel extends Model
 {
-    protected $fillable = ['nama_tag', 'slug'];
-    public $timetamps = true;
+    protected $fillable = [
+        'judul','slug','foto',
+        'konten','id_user','id_kategori'
+    ];
+    public $timestamps = true;
 
-    public function artikel()
+    public function kategori()
     {
-        return $this->belongsToMany('App\Artikel','artikel_tag', 'id_tag');
+        return $this->belongsTo('App\Kategori','id_kategori');
     }
 
-    public static function boot()
+    public function user()
     {
-        parent::boot();
-        self::deleting(function ($artikel) {
-            // mengecek apakah penulis masih punya akun
-            if ($artikel->artikel->count() > 0) {
-                //menyiapkan pesan eror
-                $html = 'artikel Tidak Dihapus';
-                $html = '<ul>';
-                foreach ($artikel->artikel as $data) {
-                    $html = "<li>$data->judul</li>";
-                }
-                $html = '<lu>';
-                Session::flash("flash_notification", [
-                    "level" => "danger",
-                    "message" => $html
-                ]);
-                // membatalkan proses penghapusan
-                return false;
-            }
-        });
+        return $this->belongsTo('App\User','id_user');
     }
+
+    public function tag()
+    {
+        return $this->belongsToMany('App\Tag','artikel_tag','id_artikel','id_tag');
+    }
+
     
     public function getRouteKeyName()
     {
         return 'slug';
     }
 }
+

@@ -57,10 +57,16 @@ Route::get('/admin',function() {
     return view('welcome');
 });
 
-Route::resource('/admin/artikel','ArtikelController');
-Route::resource('/admin/kategori','KategoriController');
-Route::resource('/admin/tag','TagController');
-
+Route::group(['prefix'=>'admin','middleware'=>['auth']],
+function () {
+    Route::get('/admin', function () {
+        return view('backend.index');
+    });
+    route::resource('kategori','KategoriController');
+    route::resource('tag','TagController');
+    route::resource('artikel','ArtikelController');
+}
+);
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
