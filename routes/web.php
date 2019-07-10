@@ -57,6 +57,10 @@ Route::get('/admin',function() {
     return view('welcome');
 });
 
+Route::get('/siswa',function() {
+    return view('siswa');
+});
+
 Route::group(['prefix'=>'admin','middleware'=>['auth']],
 function () {
     Route::get('/admin', function () {
