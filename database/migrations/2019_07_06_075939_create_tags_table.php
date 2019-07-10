@@ -15,15 +15,15 @@ class CreateTagsTable extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nama_tag');
-            $table->string('slug');
+            $table->String('nama_tag');
+            $table->String('slug');
             $table->timestamps();
         });
 
-        Schema::create('artikel_tags', function (Blueprint $table) {
+        Schema::create('artikel_tag', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('id_user');
-            $table->string('id_tag');
+            $table->unsignedBigInteger('id_artikel');
+            $table->unsignedBigInteger('id_tag');
             $table->timestamps();
         });
     }
@@ -36,5 +36,6 @@ class CreateTagsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('tags');
+        Schema::dropIfExists('artikel_tags');
     }
 }

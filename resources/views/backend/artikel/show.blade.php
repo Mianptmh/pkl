@@ -39,10 +39,11 @@
                             <p> Tag : 
                                 @foreach($artikel->tag as $data)
                                 <button class="btn btn-sm btn-rounded btn-success">
-                                {{ $data->nama_tag }}
+                                #{{ $data->nama_tag }}
                                 </button>
+                                  @endforeach
                                </p>
-                             @endforeach
+
                             <p>
                                 Tanggal : {{ $artikel->created_at->format('d M Y, H:i') }} WIB
                             </p>
