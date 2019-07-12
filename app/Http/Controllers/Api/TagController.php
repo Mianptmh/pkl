@@ -97,7 +97,8 @@ class TagController extends Controller
     public function show($id)
     {
         $tag = Tag::find($id);
-        $response = [
+        if(!$tag) {
+            $response = [
             'success' => false,
             'data' => 'Empety',
             'message' => 'Tag Tidak ditemukan.'
@@ -112,6 +113,7 @@ class TagController extends Controller
     ];
     return response()->json($response, 200);
 
+}
     /**
      * Show the form for editing the specified resource.
      *
@@ -135,7 +137,7 @@ class TagController extends Controller
         $tag = Tag::find($id);
         $input = $request->all();
 
-        if (!$tag)
+        if (!$tag) {
             $response = [
                 'success' => false,
                 'data' => 'Empety',
@@ -143,7 +145,7 @@ class TagController extends Controller
             ];
             return response()->json($response, 400);
         }
-        $validator = Validator::make($input, [
+        $validor = Validator::make($input,[
             'nama' => 'required|min:15'
         ]);
 
@@ -164,7 +166,7 @@ class TagController extends Controller
             'data' => $tag,
             'message' => 'Tag berhasil diupdate'
         ];
-        return response()->json($response, 200);
+        return response()->json($response, 200); 
     }
 
     /**
@@ -175,6 +177,23 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tag = Tag::find($id);
+        if(!$tag) {
+            $response = [
+                'success' => false,
+                'data' => 'Gagal menghapus.',
+                'message' => 'Tag tidak ditemukan'
+            ];
+            return response()->json($response, 400);
+        }
+
+        $tag->delete();
+        $response = [
+            'success' => true,
+            'data' => $tag,
+            'message' => 'Tag berhasil dihapus'
+        ];
+
+        return response()->json($response, 200);
     }
 }
