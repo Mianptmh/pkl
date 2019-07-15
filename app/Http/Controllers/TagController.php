@@ -44,7 +44,7 @@ class TagController extends Controller
         $tag->nama_tag = $request->nama_tag;
         $tag->slug = str_slug($request->nama_tag, '-');
         $tag->save();
-        Session::flash("flash_notification",[
+        Session::flash("flash_notification", [
             "level" => "success",
             "message" => "Berhasil menyimpan<b>"
                          . $tag->nama_tag."</b>"
