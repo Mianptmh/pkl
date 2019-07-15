@@ -21,4 +21,7 @@ Route::group(['middleware' => 'cors'], function() {
     Route::resource('tugas','TugasController');
     Route::resource('sekolah','SekolahController');
     Route::resource('siswa','SiswaController');
+    Route::resource('artikel','ArtikelApiController');
+    Route::resource('kategori','KategoriApiController');
+    Route::resource('tag','TagApiController');
 });
